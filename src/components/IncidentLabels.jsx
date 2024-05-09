@@ -5,7 +5,7 @@ import {
 } from "react-icons/fc";
 
 import { HiMiniSignal } from "react-icons/hi2";
-
+import { FiClock } from "react-icons/fi";
 import { TbCategory } from "react-icons/tb";
 
 import { DateTime } from "luxon";
@@ -49,22 +49,22 @@ const IncidentLabels = ({ severity, status, type, duration }) => {
           {severity}
         </p>
       </div>
-      <div className='flex truncate'>
+      <div className='flex truncate items-center'>
         <span className='mr-0.5'>
           <HiMiniSignal className='h-4 w-4 text-slate-500' />
         </span>
         <p className='mr-2 text-sm text-slate-500 truncate'>{status}</p>
       </div>
-      <div className='flex'>
+      <div className='flex items-center'>
         {" "}
         <span className='mr-0.5'>
           <TbCategory className='h-4 w-4 text-slate-500 truncate' />
         </span>
         <p className='mr-2 text-sm text-slate-500 truncate'>{type}</p>
       </div>
-      <div className='flex shrink truncate'>
+      <div className='flex shrink truncate items-center'>
         <span className='mr-0.5'>
-          <TbCategory className='h-4 w-4 text-slate-500' />
+          <FiClock className='h-4 w-4 text-slate-500' />
         </span>
         <p className='mr-2 text-sm text-slate-500'>{getDiffTime()}</p>
       </div>

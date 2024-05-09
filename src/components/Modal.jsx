@@ -49,7 +49,7 @@ const Modal = ({ toggleModal, data, onSubmit }) => {
               <FormRowMultiSelect
                 name='lead'
                 labelText='Incident Lead'
-                defaultValue=''
+                defaultValue={users[0]}
                 isMult={false}
                 options={users}
               />

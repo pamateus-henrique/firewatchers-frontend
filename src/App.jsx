@@ -8,7 +8,6 @@ import {
   Landing,
   Dashboard,
   Home,
-  DeclareIncident,
   IncidentDetails,
   EditIncident,
   Incidents,
@@ -16,7 +15,6 @@ import {
 
 import { action as LoginAction } from "./pages/Login";
 import { action as RegisterAction } from "./pages/Register";
-import { action as CreateIncidentAction } from "./pages/DeclareIncident";
 
 import { loader as IncidentsLoader } from "./pages/Home";
 
@@ -47,11 +45,7 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         children: [
           { index: true, element: <Home />, loader: IncidentsLoader },
-          {
-            path: "create-incident",
-            element: <DeclareIncident />,
-            action: CreateIncidentAction,
-          },
+
           {
             path: "incidents",
             element: <Incidents />,

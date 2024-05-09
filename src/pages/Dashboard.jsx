@@ -7,7 +7,6 @@ const Dashboard = () => {
       <div className='container flex min-h-screen min-w-full bg-white'>
         <BigSideBar />
         <div className='w-full'>
-          <TopBar />
           <Outlet />
         </div>
       </div>

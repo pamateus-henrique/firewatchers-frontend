@@ -3,35 +3,27 @@ import Select from "react-select";
 const customStyles = {
   control: (provided) => ({
     ...provided,
-
+    backgroundColor: "rgb(248, 250, 252)",
     // Tailwind p-4 equivalent
     border: "1px solid #d1d5db", // Tailwind border-2 border-gray-300 equivalent
     borderRadius: "0.375rem", // Tailwind rounded-md equivalent
-    boxShadow: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
   }),
   // Add more style adjustments here as needed
 };
 
-const FormRowMultiSelect = ({
+const Filters = ({
   options,
   isMult = true,
   name,
   labelText,
   defaultValue,
-  description,
-  footerNote,
+  handleChange,
 }) => {
   return (
     <div className=''>
-      <label
-        htmlFor={name}
-        className='block mb-1 text-sm text-slate-700 font-semibold'
-      >
+      <label htmlFor={name} className='block mb-2 text-sm text-slate-800'>
         {labelText}
       </label>
-      {description && (
-        <p className='description text-sm mb-2 text-slate-700'>{description}</p>
-      )}
       <Select
         id={name}
         options={options}
@@ -39,10 +31,10 @@ const FormRowMultiSelect = ({
         name={name}
         defaultValue={defaultValue}
         styles={customStyles}
+        onChange={(e) => handleChange("type", e)}
       />
-      {footerNote && <p className='text-xs mb-1'>{footerNote}</p>}
     </div>
   );
 };
 
-export default FormRowMultiSelect;
+export default Filters;

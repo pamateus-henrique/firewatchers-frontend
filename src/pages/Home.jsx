@@ -1,7 +1,9 @@
 import IncidentsContainer from "../components/IncidentsContainer";
+import TopBar from "../components/TopBar";
+import DeclareIncident from "../components/DeclareIncidentModal";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
-import { useContext, createContext } from "react";
+import { useContext, createContext, useState } from "react";
 
 export const loader = async () => {
   try {
@@ -12,15 +14,43 @@ export const loader = async () => {
   }
 };
 
+const submitForm = async (event) => {
+  event.preventDefault();
+  try {
+    const formData = new FormData(event.target);
+    const submitData = Object.fromEntries(formData);
+    await axios.post("/api/v1/incidents", submitData);
+    toggleModal();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const HomeContext = createContext();
 
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   const data = useLoaderData();
   return (
     <HomeContext.Provider value={{ data }}>
+      <TopBar name='Home' toggleModal={toggleModal} />
       <div className='content flex-auto'>
         <div className='active-incidents mx-auto max-w-screen-xl'>
-          <h1 className='text-md font-semibold py-6'>Active incidents</h1>
+          {isModalOpen == true ? (
+            <DeclareIncident toggleModal={toggleModal} onSubmit={submitForm} />
+          ) : (
+            ""
+          )}
+          <div className='flex items-center justify-start pt-6 pb-2 space-x-1'>
+            <span className='rounded-full bg-red-600 w-2 h-2 animate-pulse'></span>
+            <h1 className='text-md font-semibold'>Active incidents</h1>
+          </div>
+
           <IncidentsContainer />
         </div>
         <div className='activity'></div>
