@@ -14,12 +14,19 @@ export const loader = async () => {
   }
 };
 
+const toggleModal = () => {
+  setIsModalOpen(!isModalOpen);
+};
+
 const submitForm = async (event) => {
   event.preventDefault();
   try {
     const formData = new FormData(event.target);
-    const submitData = Object.fromEntries(formData);
-    await axios.post("/api/v1/incidents", submitData);
+    let data = Object.fromEntries(formData);
+    data.products_affected = formData.getAll("products_affected");
+    data.areas_affected = formData.getAll("areas_affected");
+    data.performance_indicators = formData.getAll("performance_indicators");
+    await axios.post("/api/v1/incidents", data);
     toggleModal();
   } catch (e) {
     console.error(e);
@@ -30,7 +37,6 @@ const HomeContext = createContext();
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
