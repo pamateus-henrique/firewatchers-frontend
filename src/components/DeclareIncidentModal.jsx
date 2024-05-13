@@ -7,27 +7,27 @@ import { INCIDENT_SEVERITY, INCIDENT_SOURCE } from "../utils/constants";
 import { useEffect, useState } from "react";
 import { formatData } from "../utils/formatData";
 
-export const action = async ({ request }) => {
-  const formData = await request.formData();
+// export const action = async ({ request }) => {
+//   const formData = await request.formData();
 
-  let data = Object.fromEntries(formData);
-  data.products_affected = formData.getAll("products_affected");
-  data.areas_affected = formData.getAll("areas_affected");
-  data.performance_indicators = formData.getAll("performance_indicators");
+//   let data = Object.fromEntries(formData);
+//   data.products_affected = formData.getAll("products_affected");
+//   data.areas_affected = formData.getAll("areas_affected");
+//   data.performance_indicators = formData.getAll("performance_indicators");
 
-  try {
-    await axios.post("/api/v1/incidents", data);
-    console.log(data);
-    return "ok";
-    return redirect("/dashboard");
-  } catch (e) {
-    console.log(e.response.data);
-    return {
-      errors: e.response.data || { message: "An unexpected error occurred" },
-    };
-  }
-  return "ok";
-};
+//   try {
+//     await axios.post("/api/v1/incidents", data);
+//     console.log(data);
+//     return "ok";
+//     return redirect("/dashboard");
+//   } catch (e) {
+//     console.log(e.response.data);
+//     return {
+//       errors: e.response.data || { message: "An unexpected error occurred" },
+//     };
+//   }
+//   return "ok";
+// };
 
 const DeclareIncident = ({ toggleModal, onSubmit }) => {
   const [types, setTypes] = useState([]);
@@ -71,11 +71,13 @@ const DeclareIncident = ({ toggleModal, onSubmit }) => {
           Declare Incident
         </div>
 
-        <form className='mt-6 space-y-4' onSubmit={onSubmit}>
+        <form
+          className='mt-6 space-y-4'
+          onSubmit={(event) => onSubmit(event, toggleModal)}
+        >
           <FormRow
             type='text'
             name='title'
-            placeholder='The office dog is lost...'
             labelText='Name'
             description="Give a short description of what is happening. If you'd like to, you can
           leave it blank and change it later"

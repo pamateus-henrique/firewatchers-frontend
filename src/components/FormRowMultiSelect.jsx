@@ -25,7 +25,7 @@ const FormRowMultiSelect = ({
     <div className=''>
       <label
         htmlFor={name}
-        className='block mb-1 text-sm text-slate-700 font-semibold'
+        className='block mb-1 text-sm text-slate-800 font-semibold'
       >
         {labelText}
       </label>

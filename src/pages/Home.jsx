@@ -14,11 +14,11 @@ export const loader = async () => {
   }
 };
 
-const toggleModal = () => {
-  setIsModalOpen(!isModalOpen);
-};
+// const toggleModal = () => {
+//   setIsModalOpen(!isModalOpen);
+// };
 
-const submitForm = async (event) => {
+const submitForm = async (event, toggleModal) => {
   event.preventDefault();
   try {
     const formData = new FormData(event.target);
@@ -54,7 +54,7 @@ const Home = () => {
           )}
           <div className='flex items-center justify-start pt-6 pb-2 space-x-1'>
             <span className='rounded-full bg-red-600 w-2 h-2 animate-pulse'></span>
-            <h1 className='text-md font-semibold'>Active incidentssssss</h1>
+            <h1 className='text-md font-semibold'>Active incidents</h1>
           </div>
 
           <IncidentsContainer />
