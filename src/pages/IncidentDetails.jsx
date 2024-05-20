@@ -1,36 +1,31 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+// IncidentDetails.js
 
+// dependencies
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
+// components
 import Modal from "../components/Modal";
 import BreadCrumb from "../components/BreadCrumb";
-import {
-  FcHighPriority,
-  FcLowPriority,
-  FcMediumPriority,
-} from "react-icons/fc";
 
+// icons
 import { IoIosArrowBack } from "react-icons/io";
 import { GoPencil } from "react-icons/go";
+
+// utils
+import modals from "../utils/modals";
+import { renderSeverityIcon } from "../utils/renderIcon.jsx";
 
 const IncidentDetails = () => {
   const [data, setData] = useState(null);
   const [update, setUpdate] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState("");
+  const [isSeverityModalOpen, setIsSeverityModalOpen] = useState(false);
   const [editedSummary, setEditedSummary] = useState("");
   const [isEditingSummary, setIsEditingSummary] = useState(false);
   const { id } = useParams();
-
-  const renderSeverityIcon = () => {
-    switch (incident.severity) {
-      case "Major":
-        return <FcHighPriority className='w-5 h-5 text-slate-500' />;
-      case "Minor":
-        return <FcMediumPriority className='w-5 h-5 text-slate-500' />;
-      case "No customer impact":
-        return <FcLowPriority className='w-5 h-5 text-slate-500' />;
-    }
-  };
 
   useEffect(() => {
     const getData = async () => {
@@ -40,12 +35,18 @@ const IncidentDetails = () => {
     getData();
   }, [update]);
 
-  const submitForm = async (event) => {
+  const submitForm = async (event, endpointTemplate, method) => {
     event.preventDefault();
+    const endpoint = endpointTemplate.replace("${id}", id);
     try {
       const formData = new FormData(event.target);
       const submitData = Object.fromEntries(formData);
-      await axios.patch(`/api/v1/incidents/${id}`, submitData);
+
+      axios({
+        method: method,
+        url: endpoint,
+        data: submitData,
+      });
       setUpdate(!update);
       toggleModal();
     } catch (e) {
@@ -62,7 +63,9 @@ const IncidentDetails = () => {
     setUpdate(!update);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (modal = "") => {
+    setModal(modal);
+
     setIsModalOpen(!isModalOpen);
   };
 
@@ -72,15 +75,18 @@ const IncidentDetails = () => {
     return <h1>Loading.....</h1>;
   }
 
-  console.log(incident);
-
   return (
     <div className='wrapper'>
       <div className='upperbar bg-white inline-flex border-b border-slate-200 p-5 text-lg space-x-1 w-full'>
         <div className='info flex items-center justify-center space-x-2'>
           <IoIosArrowBack className='w-7 h-7 text-slate-500' />
-          <div className='severity flex items-center bg-slate-100 border-slate-300 border rounded-full p-2 px-3'>
-            <span className='mr-0.5'>{renderSeverityIcon()}</span>
+          <div
+            className='severity flex items-center bg-slate-100 border-slate-300 border rounded-full p-2 px-3'
+            onClick={(e) => toggleModal(modals.update_severity)}
+          >
+            <span className='mr-0.5'>
+              {renderSeverityIcon(incident.severity)}
+            </span>
             <span className='text-sm'>{incident.severity}</span>
           </div>
 
@@ -99,10 +105,11 @@ const IncidentDetails = () => {
             {isModalOpen && (
               <Modal
                 toggleModal={toggleModal}
-                data={incident}
+                config={modal}
                 onSubmit={submitForm}
               />
             )}
+
             <div className='p-2 flex justify-between shadow-md rounded-sm border border-slate-200'>
               {isEditingSummary ? (
                 <>
@@ -127,7 +134,10 @@ const IncidentDetails = () => {
           </div>
           <div className='aisde w-1/4 text-slate-600'>
             <div className='partipants text-sm'>
-              <div className='flex justify-between mb-2' onClick={toggleModal}>
+              <div
+                className='flex justify-between mb-2'
+                onClick={(e) => toggleModal(modals.update_lead)}
+              >
                 <h3>Incident Lead </h3>
                 <div className='flex justify-center items-center  text-slate-700 space-x-1'>
                   <span className='rounded-full w-6 h-6 overflow-hidden'>

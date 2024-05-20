@@ -21,7 +21,7 @@ export const action = async ({ request }) => {
 const Register = () => {
   const actionData = useActionData();
   const errors = actionData?.errors || null;
-  console.log(errors);
+
   return (
     <div className='wrapper bg-slate-100 mx-auto h-screen flex justify-center items-center'>
       <div className='form-modal flex flex-col bg-white p-6 rounded-md ring-1 ring-slate-200 shadow-md'>

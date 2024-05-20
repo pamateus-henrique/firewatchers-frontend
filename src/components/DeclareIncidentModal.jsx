@@ -1,55 +1,29 @@
 import { Form, Link, redirect } from "react-router-dom";
-import FormRow from "./FormRow";
-import FormRowSelect from "./FormRowSelect";
-import FormRowMultiSelect from "./FormRowMultiSelect";
+// import FormRow from "./FormRow";
+// import FormRowSelect from "./FormRowSelect";
+// import FormRowMultiSelect from "./FormRowMultiSelect";
+import modals from "../utils/modals";
 import axios from "axios";
 import { INCIDENT_SEVERITY, INCIDENT_SOURCE } from "../utils/constants";
 import { useEffect, useState } from "react";
 import { formatData } from "../utils/formatData";
 
-// export const action = async ({ request }) => {
-//   const formData = await request.formData();
-
-//   let data = Object.fromEntries(formData);
-//   data.products_affected = formData.getAll("products_affected");
-//   data.areas_affected = formData.getAll("areas_affected");
-//   data.performance_indicators = formData.getAll("performance_indicators");
-
-//   try {
-//     await axios.post("/api/v1/incidents", data);
-//     console.log(data);
-//     return "ok";
-//     return redirect("/dashboard");
-//   } catch (e) {
-//     console.log(e.response.data);
-//     return {
-//       errors: e.response.data || { message: "An unexpected error occurred" },
-//     };
-//   }
-//   return "ok";
-// };
-
 const DeclareIncident = ({ toggleModal, onSubmit }) => {
-  const [types, setTypes] = useState([]);
-  const [causes, setCauses] = useState([]);
-  const [areas, setAreas] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [faultySystems, setFaultySystems] = useState([]);
-  const [performanceIndicators, setPerformanceIndicators] = useState([]);
-
+  const [selectOptions, setSelectOptions] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
       try {
         const { data } = await axios.get(`/api/v1/utils/types`);
 
-        setTypes(formatData(data.fields.types));
-        setCauses(formatData(data.fields.causes));
-        setAreas(formatData(data.fields.areas));
-        setProducts(formatData(data.fields.products));
-        setFaultySystems(formatData(data.fields.faultySystems));
-        setPerformanceIndicators(formatData(data.fields.performanceIndicators));
+        const newOptions = Object.keys(data.fields).reduce((acc, key) => {
+          acc[key] = formatData(data.fields[key]);
+          return acc;
+        }, {});
+
+        setSelectOptions(newOptions);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -79,16 +53,14 @@ const DeclareIncident = ({ toggleModal, onSubmit }) => {
             type='text'
             name='title'
             labelText='Name'
-            description="Give a short description of what is happening. If you'd like to, you can
-          leave it blank and change it later"
+            description="Give a short description of what is happening. If you'd like to, you can leave it blank and change it later"
           />
-
           <FormRowMultiSelect
             name='type'
             labelText='Incident Type'
             defaultValue=''
             isMult={false}
-            options={types}
+            options={selectOptions.types || []}
           />
           <FormRowSelect
             name='severity'
@@ -109,38 +81,35 @@ const DeclareIncident = ({ toggleModal, onSubmit }) => {
             name='impact'
             placeholder='Enter value...'
             labelText='Impact'
-            description='How the incident impact the company? And the customers? How many transactions/users were affected? Was there financial loss? Describe it.
-          '
+            description='How the incident impacted the company? And the customers? How many transactions/users were affected? Was there financial loss? Describe it.'
           />
           <FormRowSelect
             name='source_of_the_incident'
             labelText='Incident Source'
             defaultValue=''
             list={Object.values(INCIDENT_SOURCE)}
-            description='Internal: caused by our operation External: caused by a partner (BTG, bank, card brand, others .. )
-          '
+            description='Internal: caused by our operation External: caused by a partner (BTG, bank, card brand, others .. )'
           />
           <FormRowMultiSelect
             name='products_affected'
             labelText='Products Affected'
             defaultValue=''
-            options={products}
+            options={selectOptions.products || []}
             description='Which products have been affected by the incident'
           />
           <FormRowMultiSelect
             name='areas_affected'
             labelText='Areas Affected'
             defaultValue=''
-            options={areas}
-            description='Which especific part of the products have been affected by the incident'
+            options={selectOptions.areas || []}
+            description='Which specific part of the products has been affected by the incident'
           />
           <FormRowMultiSelect
             name='performance_indicators'
             labelText='Performance Indicators'
             defaultValue=''
-            options={performanceIndicators}
-            description='Which performance indicator trigged the incident
-          '
+            options={selectOptions.performanceIndicators || []}
+            description='Which performance indicator triggered the incident'
           />
           <FormRow
             type='datetime-local'
@@ -153,8 +122,7 @@ const DeclareIncident = ({ toggleModal, onSubmit }) => {
             name='thread_on_slack'
             placeholder='url....'
             labelText='Slack Thread'
-            description='link for a thread on Slack with the topic
-          '
+            description='Link for a thread on Slack with the topic'
           />
           <div className='flex justify-end'>
             <button

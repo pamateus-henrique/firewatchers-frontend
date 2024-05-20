@@ -15,7 +15,7 @@ const Incidents = () => {
     const getData = async () => {
       setIsLoading(true);
       const { data } = await axios.get(`/api/v1/incidents/overview`);
-      console.log(data.rows);
+
       setData(data.rows);
       setIsLoading(false);
     };
@@ -35,7 +35,6 @@ const Incidents = () => {
       ...prevFilters,
       [filterName]: value.value,
     }));
-    console.log(filterType);
   };
   const options = [
     { value: "1", label: "Default" },

@@ -17,7 +17,7 @@ const IncidentLabels = ({ severity, status, type, duration }) => {
 
     const difference = now.diff(date1, ["days", "hours", "minutes"]);
     const { days, hours, minutes } = difference.toObject();
-    console.log();
+
     // Build the output string conditionally
     let output = "";
     if (days >= 1) {

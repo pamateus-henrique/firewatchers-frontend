@@ -14,7 +14,7 @@ import {
 } from "../utils/constants";
 export const loader = async ({ params }) => {
   const { id } = params;
-  console.log(id);
+
   try {
     const data = await axios.get(`/api/v1/incidents/${id}`);
     return data;
@@ -25,7 +25,7 @@ export const loader = async ({ params }) => {
 const EditIncident = () => {
   const { data } = useLoaderData();
   const incident = data.rows[0];
-  console.log(incident.areas);
+
   return (
     <div className='mx-auto max-w-screen-lg'>
       <Form className='mt-6 space-y-6' method='post'>

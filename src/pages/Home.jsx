@@ -1,10 +1,10 @@
 import IncidentsContainer from "../components/IncidentsContainer";
 import TopBar from "../components/TopBar";
-import DeclareIncident from "../components/DeclareIncidentModal";
+import Modal from "../components/Modal";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 import { useContext, createContext, useState } from "react";
-
+import modals from "../utils/modals";
 export const loader = async () => {
   try {
     const { data } = await axios.get("/api/v1/incidents?category=Active");
@@ -14,19 +14,33 @@ export const loader = async () => {
   }
 };
 
-// const toggleModal = () => {
-//   setIsModalOpen(!isModalOpen);
-// };
-
-const submitForm = async (event, toggleModal) => {
+const submitForm = async (event, endpointTemplate, method) => {
   event.preventDefault();
+  const endpoint = endpointTemplate;
+
   try {
     const formData = new FormData(event.target);
-    let data = Object.fromEntries(formData);
-    data.products_affected = formData.getAll("products_affected");
-    data.areas_affected = formData.getAll("areas_affected");
-    data.performance_indicators = formData.getAll("performance_indicators");
-    await axios.post("/api/v1/incidents", data);
+    const submitData = {};
+
+    formData.forEach((value, key) => {
+      if (submitData[key]) {
+        // If the key already exists, it means it's a multi-select, convert to array if not already
+        if (!Array.isArray(submitData[key])) {
+          submitData[key] = [submitData[key]];
+        }
+        submitData[key].push(value);
+      } else {
+        submitData[key] = value;
+      }
+    });
+
+    console.log(submitData); // For debugging
+    await axios({
+      method: method,
+      url: endpoint,
+      data: submitData,
+    });
+
     toggleModal();
   } catch (e) {
     console.error(e);
@@ -48,7 +62,11 @@ const Home = () => {
       <div className='content flex-auto'>
         <div className='active-incidents mx-auto max-w-screen-xl'>
           {isModalOpen == true ? (
-            <DeclareIncident toggleModal={toggleModal} onSubmit={submitForm} />
+            <Modal
+              toggleModal={toggleModal}
+              onSubmit={submitForm}
+              config={modals.declare_incident}
+            />
           ) : (
             ""
           )}
