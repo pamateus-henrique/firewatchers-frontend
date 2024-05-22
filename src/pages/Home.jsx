@@ -34,7 +34,6 @@ const submitForm = async (event, endpointTemplate, method) => {
       }
     });
 
-    console.log(submitData); // For debugging
     await axios({
       method: method,
       url: endpoint,

@@ -16,7 +16,7 @@ const Incidents = () => {
       setIsLoading(true);
       const { data } = await axios.get(`/api/v1/incidents/overview`);
 
-      setData(data.rows);
+      setData(data.incidentsOverview);
       setIsLoading(false);
     };
     getData();

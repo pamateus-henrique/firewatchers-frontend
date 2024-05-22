@@ -60,11 +60,11 @@ const Modal = ({ toggleModal, onSubmit, config, defaultValue }) => {
 
   return (
     <div
-      className='fixed inset-0 bg-slate-900 bg-opacity-25 flex justify-center items-start pt-8 overflow-y-scroll'
+      className='fixed inset-0 backdrop-blur-[2px] flex justify-center items-start pt-8 overflow-y-scroll'
       onClick={toggleModal}
     >
       <div
-        className='w bg-white rounded-md mx-4 shadow-xl px-4 w-2/5 mb-16'
+        className='w bg-white rounded-md mx-4 shadow-xl px-4 w-2/5 mb-16  border border-slate-200'
         onClick={(e) => e.stopPropagation()}
       >
         <div className='title px-4 py-4 border-b-[1px] border-slate-300 text-md font-medium -mx-4'>

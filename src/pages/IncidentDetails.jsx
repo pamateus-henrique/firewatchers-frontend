@@ -22,7 +22,7 @@ const IncidentDetails = () => {
   const [update, setUpdate] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState("");
-  const [isSeverityModalOpen, setIsSeverityModalOpen] = useState(false);
+
   const [editedSummary, setEditedSummary] = useState("");
   const [isEditingSummary, setIsEditingSummary] = useState(false);
   const { id } = useParams();
@@ -69,7 +69,7 @@ const IncidentDetails = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const incident = data?.rows[0];
+  const incident = data?.incident[0];
 
   if (incident == null) {
     return <h1>Loading.....</h1>;
@@ -97,7 +97,7 @@ const IncidentDetails = () => {
         </div>
       </div>
 
-      <BreadCrumb />
+      <BreadCrumb highlightedStep='Fixing' />
 
       <div>
         <div className='mx-auto max-w-screen-xl flex mt-16 space-x-4'>
