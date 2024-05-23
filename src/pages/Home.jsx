@@ -14,41 +14,41 @@ export const loader = async () => {
   }
 };
 
-const submitForm = async (event, endpointTemplate, method) => {
-  event.preventDefault();
-  const endpoint = endpointTemplate;
-
-  try {
-    const formData = new FormData(event.target);
-    const submitData = {};
-
-    formData.forEach((value, key) => {
-      if (submitData[key]) {
-        // If the key already exists, it means it's a multi-select, convert to array if not already
-        if (!Array.isArray(submitData[key])) {
-          submitData[key] = [submitData[key]];
-        }
-        submitData[key].push(value);
-      } else {
-        submitData[key] = value;
-      }
-    });
-
-    await axios({
-      method: method,
-      url: endpoint,
-      data: submitData,
-    });
-
-    toggleModal();
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 const HomeContext = createContext();
 
 const Home = () => {
+  const submitForm = async (event, endpointTemplate, method) => {
+    event.preventDefault();
+    const endpoint = endpointTemplate;
+
+    try {
+      const formData = new FormData(event.target);
+      const submitData = {};
+
+      formData.forEach((value, key) => {
+        if (submitData[key]) {
+          // If the key already exists, it means it's a multi-select, convert to array if not already
+          if (!Array.isArray(submitData[key])) {
+            submitData[key] = [submitData[key]];
+          }
+          submitData[key].push(value);
+        } else {
+          submitData[key] = value;
+        }
+      });
+
+      await axios({
+        method: method,
+        url: endpoint,
+        data: submitData,
+      });
+
+      toggleModal();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
