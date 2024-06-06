@@ -23,14 +23,20 @@ const modals = {
   update_lead: {
     title: "Edit Role Assignments",
     fields: [fields.incident_lead],
-    globalOptionsEndpoint: "/api/v1/incidents/${id}/actions/update-lead",
-    endpoint: "/api/v1/incidents/${id}/actions",
+    globalOptionsEndpoint: "/api/v1/users/all-users",
+    endpoint: "/api/v1/incidents/${id}/actions/update-lead",
     method: "PATCH",
   },
   update_severity: {
     title: "Update Severity",
     fields: [fields.severity],
     endpoint: "/api/v1/incidents/${id}/actions/update-severity",
+    method: "PATCH",
+  },
+  update_status: {
+    title: "Update Status",
+    fields: [fields.status],
+    endpoint: "/api/v1/incidents/${id}/actions/update-status",
     method: "PATCH",
   },
 };

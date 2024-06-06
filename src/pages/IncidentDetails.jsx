@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 // components
 import Modal from "../components/Modal";
 import BreadCrumb from "../components/BreadCrumb";
-
+import ChangeStatusModal from "../components/ChangeStatusModal.jsx";
 // icons
 import { IoIosArrowBack } from "react-icons/io";
 import { GoPencil } from "react-icons/go";
@@ -21,6 +21,7 @@ const IncidentDetails = () => {
   const [data, setData] = useState(null);
   const [update, setUpdate] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSecundaryModalOpen, setIsSecundaryModalOpen] = useState(false);
   const [modal, setModal] = useState("");
 
   const [editedSummary, setEditedSummary] = useState("");
@@ -42,7 +43,7 @@ const IncidentDetails = () => {
       const formData = new FormData(event.target);
       const submitData = Object.fromEntries(formData);
 
-      axios({
+      await axios({
         method: method,
         url: endpoint,
         data: submitData,
@@ -69,6 +70,11 @@ const IncidentDetails = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const toggleSecundaryModal = () => {
+    setIsSecundaryModalOpen(!isSecundaryModalOpen);
+    setUpdate(!update);
+  };
+
   const incident = data?.incident[0];
 
   if (incident == null) {
@@ -81,7 +87,7 @@ const IncidentDetails = () => {
         <div className='info flex items-center justify-center space-x-2'>
           <IoIosArrowBack className='w-7 h-7 text-slate-500' />
           <div
-            className='severity flex items-center bg-slate-100 border-slate-300 border rounded-full p-2 px-3'
+            className='severity flex items-center bg-slate-100 border-slate-300 border rounded-full p-2 px-3 hover:cursor-pointer'
             onClick={(e) => toggleModal(modals.update_severity)}
           >
             <span className='mr-0.5'>
@@ -96,9 +102,9 @@ const IncidentDetails = () => {
           </span>
         </div>
       </div>
-
-      <BreadCrumb highlightedStep='Fixing' />
-
+      <div onClick={() => setIsSecundaryModalOpen(true)}>
+        <BreadCrumb highlightedStep={incident.status} />
+      </div>
       <div>
         <div className='mx-auto max-w-screen-xl flex mt-16 space-x-4'>
           <div className='content w-3/4'>
@@ -107,6 +113,15 @@ const IncidentDetails = () => {
                 toggleModal={toggleModal}
                 config={modal}
                 onSubmit={submitForm}
+              />
+            )}
+
+            {isSecundaryModalOpen && (
+              <ChangeStatusModal
+                toggleSecundaryModal={toggleSecundaryModal}
+                toggleModal={toggleModal}
+                id={incident.id}
+                status={incident.status}
               />
             )}
 

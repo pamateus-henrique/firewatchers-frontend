@@ -94,4 +94,10 @@ export const fields = {
     description:
       "The person currently coordinating the incident, tasked with driving it to resolution and ensuring clear internal and external communication with stakeholders and customers.",
   },
+  // status: {
+  //   label: "Status",
+  //   type: 'radio',
+  //   label: "status",
+  //   footerNote:
+  // },
 };
