@@ -57,7 +57,7 @@ const IncidentDetails = () => {
 
   const saveChanges = async (e) => {
     e.preventDefault();
-    await axios.patch(`/api/v1/incidents/${id}`, {
+    await axios.patch(`/api/v1/incidents/${id}/actions/update-summary`, {
       summary: editedSummary || incident.summary,
     });
     setIsEditingSummary(false);
