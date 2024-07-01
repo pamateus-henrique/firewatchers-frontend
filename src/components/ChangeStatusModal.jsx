@@ -55,7 +55,7 @@ const changeStatusModal = ({
 
   return (
     <div
-      className='fixed inset-0 backdrop-blur-[2px] flex justify-center items-start pt-8 overflow-y-scroll'
+      className='fixed inset-0 backdrop-blur-[1px] flex justify-center items-start pt-8 overflow-y-scroll'
       onClick={toggleSecundaryModal}
     >
       <div

@@ -39,6 +39,22 @@ const modals = {
     endpoint: "/api/v1/incidents/${id}/actions/update-status",
     method: "PATCH",
   },
+  resolve_incident: {
+    title: "Resolve Incident",
+    fields: [
+      fields.title,
+      fields.type,
+      fields.severity,
+      fields.summary,
+      fields.impact,
+      fields.source_of_the_incident,
+      fields.products_affected,
+      fields.areas_affected,
+      fields.performance_indicators,
+      fields.impact_started_at,
+      fields.thread_on_slack,
+    ],
+  },
 };
 
 export default modals;

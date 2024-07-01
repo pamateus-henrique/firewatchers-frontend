@@ -4,7 +4,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import TextEditor from "../components/TextEditor.jsx";
 // components
 import Modal from "../components/Modal";
 import BreadCrumb from "../components/BreadCrumb";
@@ -106,7 +106,7 @@ const IncidentDetails = () => {
         <BreadCrumb highlightedStep={incident.status} />
       </div>
       <div>
-        <div className='mx-auto max-w-screen-xl flex mt-16 space-x-4'>
+        <div className='mx-auto max-w-screen-xl flex mt-8 space-x-4'>
           <div className='content w-3/4'>
             {isModalOpen && (
               <Modal
@@ -125,8 +125,8 @@ const IncidentDetails = () => {
               />
             )}
 
-            <div className='p-2 flex justify-between shadow-md rounded-sm border border-slate-200'>
-              {isEditingSummary ? (
+            <div className='p-2 flex  shadow-md rounded-sm border border-slate-200'>
+              {/* {isEditingSummary ? (
                 <>
                   <input
                     type='text'
@@ -143,7 +143,8 @@ const IncidentDetails = () => {
                     <GoPencil className='w-4 h-4 text-slate-500' />
                   </span>
                 </>
-              )}
+              )} */}
+              <TextEditor initialText={"Testando"} />
             </div>
             <div className='header'>Updates</div>
           </div>
@@ -163,7 +164,7 @@ const IncidentDetails = () => {
               </div>
               <div className='flex justify-between mb-2'>
                 <h3>Reporter: </h3>
-                <p className='text-black'>{incident.reporter_name}</p>
+                <p className='text-slate-700'>{incident.reporter_name}</p>
               </div>
               <div className='flex justify-between mb-2'>
                 <h3>QE: </h3>
